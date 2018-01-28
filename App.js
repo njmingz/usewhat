@@ -1,45 +1,34 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
-import { Text,View, AppRegistry } from 'react-native';
-const FBSDK = require("react-native-fbsdk");
-const {LoginButton, AccessToken} = FBSDK;
+import { StyleSheet, Text, View, AppRegistry } from 'react-native';
+import { addNavigationHelpers } from 'react-navigation'
+import Login from './app/containers/Login';
+import {Provider} from 'react-redux';
+import configureStore from './app/store/configureStore';
+import AppNavigation from './app/navigators/AppNavigation'
 
-export default class App extends Component {
+let store = configureStore({});
+
+const styles = StyleSheet.create({
+  login_container:{
+    backgroundColor:'#0097A7'
+  },
+  app_container:{
+    backgroundColor:'#FFF'
+  }
+});
+
+class UseWhat extends Component {
   render() {
     return (
       <View>
-        <Text>Hello World</Text>
-        <LoginButton publishPermissions={["publish_actions"]} 
-          onLoginFinished={
-            (error, result)=>{
-              if(error){
-                console.log("login error.", result.error);
-                alert("login error." + result.error);
-              }
-              else if(result.isCancelled){
-                console.log("login cancelled.");
-                alert("login cancelled.");
-              }
-              else{
-                console.log("login success.", result.error);
-                AccessToken.getCurrentAccessToken().then((data)=>{
-                  console.log("getCurrentAccessToken", data)
-                }).catch((err)=>{
-                  console.log("Error occurred while getting access token.", err);
-                  alert("Error occurred while getting access token.");
-                });
-              }
-            }
-          }
-          onLogoutFinished={() => alert("logout.")}/>
+        <RootNavigator />
       </View>
     );
   }
 }
 
-AppRegistry.registerComponent("App", ()=>App);
+export default App = () => (
+  <Provider store={store}>
+    <AppNavigation />
+  </Provider>
+);
