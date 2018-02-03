@@ -1,4 +1,4 @@
-import {LOAD_USER, INIT_USER, LOAD_ERROR} from '../actions/user';
+import {INIT_LOGIN, INIT_LOGOUT, LOAD_ERROR} from '../actions/types';
 
 export default userReducer = (state={
     user: {},
@@ -6,13 +6,13 @@ export default userReducer = (state={
     error: ""
 }, action) => {
     switch(action.type){
-        case LOAD_USER:
+        case INIT_LOGIN:
             return {...state, user: action.payload, fetched:true};
-        case INIT_USER:
-            return state;
+        case INIT_LOGOUT:
+            return {user: {}, fetched:false, error:""};
         case LOAD_ERROR:
             return {...state, user:{}, error:action.payload}; 
         default:
-            return {};
+            return {...state};
     }
 };

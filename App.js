@@ -17,16 +17,6 @@ const styles = StyleSheet.create({
   }
 });
 
-class UseWhat extends Component {
-  render() {
-    return (
-      <View>
-        <RootNavigator />
-      </View>
-    );
-  }
-}
-
 export default App = () => (
   <Provider store={store}>
     <AppNavigation />

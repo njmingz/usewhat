@@ -15,7 +15,7 @@ class AppNavigation extends Component {
     }
     onBackPress = () => {
         const { dispatch, nav } = this.props;
-        if (nav.stateForLoggedIn.index <= 1) {
+        if (nav.index <= 0) {
             BackHandler.exitApp();
             return;
         }
@@ -24,13 +24,11 @@ class AppNavigation extends Component {
     };
 
     render() {
-        const { nav, dispatch, isLoggedIn } = this.props;
+        const { nav, dispatch } = this.props;
         console.log('in AppNavigation,', nav);
-        const state = isLoggedIn
-            ? nav.stateForLoggedIn
-            : nav.stateForLoggedOut;
+        //const state = nav.stack;
         return (
-            <NavigationStack navigation={addNavigationHelpers({ dispatch, state })} />
+            <NavigationStack navigation={addNavigationHelpers({ dispatch, state:nav })} />
         );
     }
 }

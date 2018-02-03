@@ -1,6 +1,4 @@
-const INIT_USER = 'INIT_USER'; //user logged out
-const LOAD_USER = 'LOAD_USER'; //user logging in
-const LOAD_ERROR = 'LOAD_ERROR'; //user login error
+import {LOAD_ERROR, INIT_LOGIN, INIT_LOGOUT} from './types';
 
 const loadUser = (access_token) =>{
     return (dispatch) =>{
@@ -16,12 +14,18 @@ const loadUser = (access_token) =>{
             user.picture_url =  json.picture.data.url;
             user.birthday = json.birthday;
 
-            dispatch({type:LOAD_USER, payload:user});
+            dispatch({type:INIT_LOGIN, payload:user});
         })
         .catch((err) => {
             dispatch({type:LOAD_ERROR, payload:err});
         })    
     };
-}
+};
 
-export {INIT_USER, LOAD_USER, LOAD_ERROR, loadUser}
+const logoutUser = ()=>{
+    return (dispatch) =>{
+        dispatch({type:INIT_LOGOUT, payload:{}});
+    };
+};
+
+export {loadUser, logoutUser}

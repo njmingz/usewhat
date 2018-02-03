@@ -1,72 +1,26 @@
 import { NavigationActions } from "react-navigation";
 
 import AppNavigator from "../navigators/NavigationStack";
-import { LOAD_USER, INIT_USER } from "../actions/user";
+import { INIT_LOGIN, INIT_LOGOUT } from "../actions/types";
+import AppNavigation from "../navigators/AppNavigation";
 
-const ActionForLoggedOut = AppNavigator.router.getActionForPathAndParams('Login');
-const ActionForLoggedIn = AppNavigator.router.getActionForPathAndParams('Home');
+const ActionForLogin = AppNavigator.router.getActionForPathAndParams('Login');
+const ActionForHome = AppNavigator.router.getActionForPathAndParams('Home');
 
-const stateForLoggedOut = AppNavigator.router.getStateForAction(ActionForLoggedOut);
-const stateForLoggedIn = AppNavigator.router.getStateForAction(ActionForLoggedIn);
 
-const initialState = { stateForLoggedOut, stateForLoggedIn };
-
-const navigationReducer = (state = initialState, action) => {
+const navigationReducer = (state, action) => {
   switch (action.type) {
-    case "@@redux/INIT":
-      console.log("IN navigationReducer, INIT.")
-      return {
-        ...state,
-        stateForLoggedIn: AppNavigator.router.getStateForAction(
-          ActionForLoggedIn,
-          stateForLoggedOut
-        )
-      };
+    case INIT_LOGIN:
+      return AppNavigator.router.getStateForAction(ActionForHome);
+      break;
 
-    case LOAD_USER:
-      console.log("IN navigationReducer, LOGIN.")
-      return {
-        ...state,
-        stateForLoggedIn: AppNavigator.router.getStateForAction(
-          ActionForLoggedIn,
-          stateForLoggedOut
-        )
-      };
-
-    case INIT_USER:
-      console.log("IN navigationReducer, LOGOUT.")
-      return {
-        ...state,
-        stateForLoggedOut: AppNavigator.router.getStateForAction(
-          NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Login" })]
-          })
-        )
-      };
-
-    /* Other logic for logging out, more cleaner but unlike the above isn't telling the reader 
-           that navigation is reset, that's why I chose the *reset* one for the article. I prefer
-           this one, what about you?
-        
-        case 'LOGOUT':
-            return { 
-              ...state, 
-              stateForLoggedIn, 
-              stateForLoggedOut
-            }
-            break;
-        */
-
+    case INIT_LOGOUT:
+      return AppNavigator.router.getStateForAction(ActionForLogin)
+      break;
+  
     default:
-      console.log("IN navigationReducer, DEFAULT.")
-      return {
-        ...state,
-        stateForLoggedIn: AppNavigator.router.getStateForAction(
-          action,
-          state.stateForLoggedIn
-        )
-      };
+      const newState = AppNavigator.router.getStateForAction(action, state);
+      return newState || state;
   }
 };
 

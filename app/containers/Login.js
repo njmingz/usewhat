@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import Login from '../components/Login';
-import {loadUser} from '../actions/user';
+import {loadUser, logoutUser} from '../actions/user';
 
 const mapStateToProps = (state) => {
     return{
@@ -11,7 +11,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loadUser: (accessToken) => {
             dispatch(loadUser(accessToken));
-        }
+        },
+        logoutUser: () =>{
+            dispatch(logoutUser());
+        },
+        dispatch:dispatch,
     }
 };
 
